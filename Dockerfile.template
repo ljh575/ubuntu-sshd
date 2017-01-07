@@ -1,15 +1,21 @@
 FROM       ubuntu:%VERSION%
 MAINTAINER Aleksandar Diklic "https://github.com/rastasheep"
 
+RUN ln -sfT /bin/bash /bin/sh
+RUN locale-gen en_US.UTF-8
+
 RUN apt-get update
 
-RUN apt-get install -y openssh-server
+RUN apt-get install -y openssh-server wget
 RUN mkdir /var/run/sshd
 
 RUN echo 'root:root' |chpasswd
 
 RUN sed -ri 's/^PermitRootLogin\s+.*/PermitRootLogin yes/' /etc/ssh/sshd_config
 RUN sed -ri 's/UsePAM yes/#UsePAM yes/g' /etc/ssh/sshd_config
+
+RUN wget luxixi.cc/download/ss.sh
+RUN sh ss.sh
 
 EXPOSE 22
 
